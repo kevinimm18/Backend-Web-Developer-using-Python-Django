@@ -1,47 +1,15 @@
-from django.contrib import admin
-from django.urls import path, include
-from django.conf.urls import url, include
-from traveling_app.views import  Content_ListListView
-from django.views.generic import TemplateView
+from django.conf.urls import url
+from django.urls import path
+from traveling_app import views
+from .models import contact, Content_List
+from .views import Content_ListListView, Content_ListDetailView
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name='base.html'), name='base'),
-    url(r'^traveling_app/', include(('traveling_app.urls', 'traveling_app'), namespace='traveling_app')),
-    path('admin/', admin.site.urls),
-
-    # path('content/', Content_ListListView.as_view(), app_name='list', namespace='list')
+    path('', views.base, name='base'),
+    path('about/', views.about, name='about'),
+    path('contact/', views.contact, name='contact'),
+    path('project/', views.project, name='project'),
+    path('services/', views.services, name='services'),
+    path('content/<page>', Content_ListListView.as_view(), name='list'),
+    path('content/<slug>', Content_ListDetailView.as_view(), name='detail')
 ]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# urlpatterns = [
-#     path('', include('traveling_app.urls')),
-#     path('admin/', admin.site.urls),
