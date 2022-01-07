@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block page_title %}
+
+{{Konten.Judul}}
+
+{% endblock page_title %}
+
+{% block contents %}
+
+<h1>{{detail.Judul}}</h1>
+<h4>{{detail.Kategori}} | {{detail.Published}}</h4>
+<p>{{detail.Isi}}</p>
+
+{% endblock contents %}

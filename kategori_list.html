@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta content="IE=edge" http-equiv="X-UA-Compatible">
+  <meta content="width=device-width,initial-scale=1" name="viewport">
+  <meta content="description" name="description">
+  <meta name="google" content="notranslate" />
+  <meta content="Mashup templates have been developped by Orson.io team" name="author">
+
+  <!-- Disable tap highlight on IE -->
+  <meta name="msapplication-tap-highlight" content="no">
+  
+  <link href="../../static/images/apple-icon-180x180.png" rel="apple-touch-icon">
+  <link href="../../static/images/favicon.ico" rel="icon">
+
+
+  {% block page_title %}
+  
+    ARTIKEL
+  
+  {% endblock page_title %}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+{% include "snippets/style.html" %}
+
+
+
+</head>
+
+<body>
+
+ <!-- Add your content of header -->
+<header class="">
+  <div class="navbar navbar-default visible-xs">
+    <button type="button" class="navbar-toggle collapsed">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a href="" class="navbar-brand">Mashup Template</a>
+  </div>
+
+  <nav class="sidebar">
+    <div class="navbar-collapse" id="navbar-collapse">
+      <div class="site-header hidden-xs">
+          <a class="site-brand" href="" title="">
+            <img class="img-responsive site-logo" alt="" src="../../static/images/mashup-logo.svg">
+            ILMUPEDIA • ARTIKEL
+          </a>
+      </div>
+      <ul class="nav">
+        <li><a href="/" title="">Home</a></li>
+        <li><a href="/traveling_app/content/1" title="">Artikel Blog</a></li>
+        <li><a href="/traveling_app/about/" title="">About</a></li>
+        <li><a href="/traveling_app/services/" title="">What we Do</a></li>
+        <li><a href="/traveling_app/contact/" title="">Contact</a></li>
+      </ul>
+
+      <nav class="nav-footer">
+        <p class="nav-footer-social-buttons">
+          <a class="fa-icon" href="https://www.instagram.com/" title="">
+            <i class="fa fa-instagram"></i>
+          </a>
+          <a class="fa-icon" href="https://dribbble.com/" title="">
+            <i class="fa fa-dribbble"></i>
+          </a>
+          <a class="fa-icon" href="https://twitter.com/" title="">
+            <i class="fa fa-twitter"></i>
+          </a>
+        </p>
+        <p>© Untitled | Website created with <a href="http://www.mashup-template.com/" title="Create website with free html template">Mashup Template</a>/<a href="https://www.unsplash.com/" title="Beautiful Free Images">Unsplash</a></p>
+      </nav>  
+    </div> 
+  </nav>
+</header>
+
+<main class="" id="main-collapse">
+
+
+
+{% comment %} Awal dari Pagination {% endcomment %}
+
+{% block contents %}
+
+{% comment %} (Memulai kolom) {% endcomment %}
+<div class="row">
+{% comment %} Kolom 1 (Sebelah Kiri) {% endcomment %}
+  <div class="col-md-8">
+    {% if is_paginated %}
+
+      <nav aria-label="traveling_appPage">
+        <ul class="pagination">
+
+          {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="{% url 'traveling_app:list' page_obj.previous_page_number%}" tabindex="-1">Previous</a>
+          </li>
+
+          {% comment %} Jika halaman Previous udah mentok  {% endcomment %}
+          {% else %}
+            <li class="page_item disabled">
+              <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+              
+          {% endif %}
+
+          {% comment %} Di halaman yang sedang kita berada tidak akan bisa di klik {% endcomment %}
+          {% for page in paginator.page_range %}
+            {% if page is page_obj.number %}
+            <li class="page-item active" aria-current="page">
+              <span class="page-link" href="#">{{page}}<span class="sr-only">(current)</span></span>
+            </li>
+            
+            {% else %}
+            <li class="page-item">
+              <a class="page-link" href="{% url 'traveling_app:list' page %}">{{page}}</a>
+            </li>
+            {% endif %}
+          
+          {% endfor %}
+
+
+          {% comment %} Coding untuk tombol Next {% endcomment %}
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="{% url 'traveling_app:list' page_obj.next_page_number%}">Next</a>
+            </li>
+
+          {% comment %} Jika halaman Next udah mentok  {% endcomment %}
+          {% else %}
+            <li class="page_item disabled">
+              <span class="page-link" href="#" tabindex="1" aria-disabled="true">Next</span>
+
+          {% endif %}
+
+
+        </ul>
+      </nav>
+
+      {% endif %}
+
+      {% comment %} Akhir dari Pagination {% endcomment %}
+
+      {% for Konten in content_list %}
+
+        <h3><a href="{% url 'traveling_app:detail' Konten.slug %}">{{ Konten.Judul }}</a></h3>
+        <p>Kategori: {{ Konten.Kategori }} | {{ Konten.Published }} </p>
+        <p class="border-bottom"> {{Konten.Isi|truncatewords:50}} <a href="{% url 'traveling_app:detail' Konten.slug %}">Selengkapnya</a></p>
+
+      {% endfor %}
+  </div>
+{% comment %} Kolom 2 (Sebelah Kanan) {% endcomment %}
+  <div class="col-sm">
+    <h3>Kategori</h3>
+    <ul class="list-group list-group-flush">
+      {% for kategori in kategori_list %}
+        <li class ="list-group-item"><li class ="list-group-item"><a href="{% url 'traveling_app:category' kategori %}">{{kategori}}</a></li>
+      {% endfor %}       
+    </ul>
+  </div>
+
+</div>
+
+
+
+
+{% endblock contents %}
+
+
+</main>
+
+{% include "snippets/scripts.html" %}
+
+</body>
+
+</html>
